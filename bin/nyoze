@@ -18,13 +18,28 @@ use Nyoze\Installer\Output;
 
 $output = new Output();
 
+// ─── Proxy to local project CLI ─────────────────────────────────────
+// If a local `nyoze` file exists in the current directory and the command
+// is not "new", delegate execution to the project-level CLI.
+$localCli = getcwd() . '/nyoze';
+$command = $argv[1] ?? null;
+
+if ($command !== 'new' && file_exists($localCli)) {
+    $args = array_slice($argv, 1);
+    $escaped = implode(' ', array_map('escapeshellarg', $args));
+    $exitCode = 0;
+    passthru("php " . escapeshellarg($localCli) . " " . $escaped, $exitCode);
+    exit($exitCode);
+}
+
+// ─── Installer commands ─────────────────────────────────────────────
 if ($argc < 2 || in_array($argv[1], ['--help', '-h', 'help'])) {
     $output->help();
     exit(0);
 }
 
-if ($argv[1] !== 'new') {
-    $output->error("Unknown command: {$argv[1]}");
+if ($command !== 'new') {
+    $output->error("Unknown command: {$command}");
     $output->help();
     exit(1);
 }
@@ -34,5 +49,5 @@ if ($argc < 3) {
     exit(1);
 }
 
-$command = new NewCommand($output);
-exit($command->run($argv[2]));
+$cmd = new NewCommand($output);
+exit($cmd->run($argv[2]));
