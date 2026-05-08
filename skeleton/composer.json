@@ -1,0 +1,17 @@
+{
+    "name": "nyoze/project",
+    "description": "A Nyoze application",
+    "type": "project",
+    "license": "MIT",
+    "require": {
+        "php": ">=8.2",
+        "pollauf/nyoze": "^0.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "App/"
+        }
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
+}

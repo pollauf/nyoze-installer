@@ -1,0 +1,38 @@
+#!/usr/bin/env php
+<?php
+// Locate autoloader (global install or local dev)
+$autoloadPaths = [
+    __DIR__ . '/../vendor/autoload.php',
+    __DIR__ . '/../../../autoload.php',
+];
+
+foreach ($autoloadPaths as $path) {
+    if (file_exists($path)) {
+        require $path;
+        break;
+    }
+}
+
+use Nyoze\Installer\NewCommand;
+use Nyoze\Installer\Output;
+
+$output = new Output();
+
+if ($argc < 2 || in_array($argv[1], ['--help', '-h', 'help'])) {
+    $output->help();
+    exit(0);
+}
+
+if ($argv[1] !== 'new') {
+    $output->error("Unknown command: {$argv[1]}");
+    $output->help();
+    exit(1);
+}
+
+if ($argc < 3) {
+    $output->error('Please provide a project name: nyoze new <name>');
+    exit(1);
+}
+
+$command = new NewCommand($output);
+exit($command->run($argv[2]));

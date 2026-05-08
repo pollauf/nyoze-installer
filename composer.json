@@ -1,0 +1,16 @@
+{
+    "name": "pollauf/nyoze-installer",
+    "description": "CLI tool for creating new Nyoze projects",
+    "type": "project",
+    "license": "MIT",
+    "keywords": ["php", "framework", "installer", "cli", "nyoze"],
+    "require": {
+        "php": ">=8.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "Nyoze\\Installer\\": "src/"
+        }
+    },
+    "bin": ["bin/nyoze"]
+}
